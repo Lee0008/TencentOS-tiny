@@ -19,9 +19,11 @@
 
 /* Includes ------------------------------------------------------------------*/
 #include "usart.h"
+#include "tos_at.h"
 
 /* USER CODE BEGIN 0 */
 uint8_t data;
+uint8_t shell_data;
 /* USER CODE END 0 */
 
 UART_HandleTypeDef hlpuart1;
@@ -48,6 +50,9 @@ void MX_LPUART1_UART_Init(void)
     Error_Handler();
   }
 	HAL_UART_Receive_IT(&hlpuart1, &data, 1);
+#if AT_INPUT_TYPE_FRAME_EN 
+  __HAL_UART_ENABLE_IT(&hlpuart1, UART_IT_IDLE);
+#endif
 }
 /* USART1 init function */
 
@@ -68,7 +73,6 @@ void MX_USART1_UART_Init(void)
   {
     Error_Handler();
   }
-
 }
 /* USART2 init function */
 
@@ -89,7 +93,7 @@ void MX_USART2_UART_Init(void)
   {
     Error_Handler();
   }
-
+  HAL_UART_Receive_IT(&huart2, &shell_data, 1);
 }
 /* USART3 init function */
 
